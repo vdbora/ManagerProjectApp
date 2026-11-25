@@ -42,6 +42,10 @@ interface CardDao {
     )
     fun observeCardsForBoard(boardId: Long): Flow<List<CardEntity>>
 
+    /** READ: cards of one column (used to find photo files before a column is deleted). */
+    @Query("SELECT * FROM cards WHERE columnId = :columnId")
+    suspend fun getCardsInColumn(columnId: Long): List<CardEntity>
+
     /** UPDATE: move a card to another column ("Move to…" and "Mark done"). */
     @Query("UPDATE cards SET columnId = :columnId, position = :position, updatedAt = :now WHERE id = :cardId")
     suspend fun moveToColumn(cardId: Long, columnId: Long, position: Int, now: Long = System.currentTimeMillis())

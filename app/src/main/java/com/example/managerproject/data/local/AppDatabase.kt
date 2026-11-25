@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.managerproject.data.local.dao.BoardDao
 import com.example.managerproject.data.local.dao.CardDao
 import com.example.managerproject.data.local.dao.ColumnDao
@@ -47,7 +48,16 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     DATABASE_NAME,
-                ).build().also { instance = it }
+                )
+                    // Runs only once, when the database file is created for the first time
+                    .addCallback(object : Callback() {
+                        override fun onCreate(db: SupportSQLiteDatabase) {
+                            super.onCreate(db)
+                            SampleData.insert(db)
+                        }
+                    })
+                    .build()
+                    .also { instance = it }
             }
     }
 }
