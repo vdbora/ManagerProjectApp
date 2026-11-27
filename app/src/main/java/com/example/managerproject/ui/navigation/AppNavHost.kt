@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.managerproject.ui.boards.BoardsScreen
 import com.example.managerproject.ui.navigation.AppDestinations.Args
 import com.example.managerproject.ui.screens.TempAction
 import com.example.managerproject.ui.screens.TemporaryScreen
@@ -64,13 +65,9 @@ fun AppNavHost(
 
         // ---------- Boards (home) ----------
         composable(AppDestinations.BOARDS) {
-            TemporaryScreen(
-                title = "My Boards",
-                description = "List of boards. The sample board has id 1.",
-                actions = listOf(
-                    TempAction("Open board 1") { navController.navigate(AppDestinations.board(1)) },
-                    TempAction("Settings") { navController.navigate(AppDestinations.SETTINGS) },
-                ),
+            BoardsScreen(
+                onOpenBoard = { boardId -> navController.navigate(AppDestinations.board(boardId)) },
+                onOpenSettings = { navController.navigate(AppDestinations.SETTINGS) },
             )
         }
 
